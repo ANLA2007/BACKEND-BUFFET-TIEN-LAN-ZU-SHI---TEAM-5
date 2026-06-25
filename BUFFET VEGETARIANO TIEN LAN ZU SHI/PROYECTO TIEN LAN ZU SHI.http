@@ -1,0 +1,6 @@
+@PROYECTO_TIEN_LAN_ZU_SHI_HostAddress = http://localhost:5143
+
+GET {{PROYECTO_TIEN_LAN_ZU_SHI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
