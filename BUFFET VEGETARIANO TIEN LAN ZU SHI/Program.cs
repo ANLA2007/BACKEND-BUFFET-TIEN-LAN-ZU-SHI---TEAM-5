@@ -30,24 +30,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Configuración de Swagger para que agregue seguridad 
+//Configuraciï¿½n de Swagger para que agregue seguridad 
 
 builder.Services.AddSwaggerGen(options =>
 
 {
     // 1. Define el esquema de seguridad (Security Scheme) 
-    // Esto le dice a Swagger que la API usa autenticación "Bearer" (JWT). 
+    // Esto le dice a Swagger que la API usa autenticaciï¿½n "Bearer" (JWT). 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization", // El nombre del header HTTP 
         Type = SecuritySchemeType.ApiKey, // Tipo de esquema 
-        Scheme = "bearer", // El nombre del esquema (debe ser minúscula)
+        Scheme = "bearer", // El nombre del esquema (debe ser minï¿½scula)
         BearerFormat = "JWT", // Formato del token 
-        In = ParameterLocation.Header, // Dónde se envía el token 
+        In = ParameterLocation.Header, // Dï¿½nde se envï¿½a el token 
         Description = "Introduce tu token JWT usando este formato: Bearer {token}"
     });
 
-    // 2. Añade el requisito de seguridad (Security Requirement) 
+    // 2. Aï¿½ade el requisito de seguridad (Security Requirement) 
     // Esto le dice a Swagger que debe aplicar el esquema "Bearer" a los endpoints. 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -134,12 +134,9 @@ builder.Services.AddScoped<IMovementInventoryService, MovementInventoryService>(
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 

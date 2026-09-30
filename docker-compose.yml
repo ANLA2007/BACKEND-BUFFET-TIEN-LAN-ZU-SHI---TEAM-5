@@ -1,0 +1,17 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: buffet_tien_lan_zu_shi_api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=${DB_SERVER:-host.docker.internal},${DB_PORT:-1433};Database=${DB_NAME:-buffet};User Id=${DB_USER:-Sa};Password=${DB_PASSWORD:-Cambiar_Esta_Clave_123!};TrustServerCertificate=True;
+      - JwtSettings__SecretKey=${JWT_SECRET:-78WYvsH7iNnqgvqA5mgPGiJ0Q7pB097czFXT8OU5}
+      - JwtSettings__Issuer=${JWT_ISSUER:-https://api.tienlanzushi.com}
+      - JwtSettings__Audiencie=${JWT_AUDIENCE:-https://tienlanzushi.com}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
