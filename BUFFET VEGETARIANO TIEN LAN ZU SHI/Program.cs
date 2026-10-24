@@ -6,6 +6,10 @@ using TIEN_LAN_ZU_SHI.Business.Interfaces;
 using TIEN_LAN_ZU_SHI.Business.Services;
 using TIEN_LAN_ZU_SHI.DataAccess.Interfaces;
 using TIEN_LAN_ZU_SHI.DataAccess.Repositories;
+using TIEN_LAN_ZU_SHI.Configurations;
+using TIEN_LAN_ZU_SHI.Middlewares;
+using TIEN_LAN_ZU_SHI.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -129,6 +133,11 @@ builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IMovementInventoryRepository, MovementInventoryRepository>();
 builder.Services.AddScoped<IMovementInventoryService, MovementInventoryService>();
 
+//LOGS DE AUDITORIA EN MONGO DB//
+builder.Services.Configure<MongoLogSettings>(
+builder.Configuration.GetSection("MongoLogSettings"));
+builder.Services.AddSingleton<ILogService, MongoLogService>();
+
 
 
 
@@ -143,6 +152,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
 app.UseAuthentication();
+
+app.UseMiddleware<AuditLoggingMiddleware>();   // ← NUEVO
 
 app.UseAuthorization();
 

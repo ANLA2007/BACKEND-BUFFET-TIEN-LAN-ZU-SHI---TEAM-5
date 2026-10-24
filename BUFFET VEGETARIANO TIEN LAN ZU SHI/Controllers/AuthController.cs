@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PROYECTO_TIEN_LAN_ZU_SHI.DTOs;
@@ -205,7 +207,30 @@ namespace PROYECTO_TIEN_LAN_ZU_SHI.Controllers
             }
         }
 
+        
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                     ?? User.FindFirst("sub")?.Value;
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value
+                     ?? User.FindFirst("name")?.Value
+                     ?? User.FindFirst("unique_name")?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value
+                     ?? User.FindFirst("email")?.Value;
+            var roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
 
+            if (id == null) return Unauthorized();
+
+            return Ok(new
+            {
+                id = int.Parse(id),
+                userName,
+                email,
+                roles
+            });
+        }
 
 
 
